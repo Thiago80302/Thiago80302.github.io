@@ -4,12 +4,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Home Page - THIAGO NOGUEIRA</title>
+
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon.png">    
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicons/favicon-32x32.png">    
+<link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicons/favicon-16x16.png">    
+<link rel="manifest" href="assets/img/favicons/site.webmanifest">
+
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style type="text/tailwindcss">
+
+    body {
+        @apply text-center bg-gray-50 text-gray-800;
+    }
+
+    header {
+        @apply pt-8 px-[9%] pb-[42px] md:py-[3%] md:px-[20%];
+    }
+
+    header h1 {
+        @apply tracking-tighter text-5xl md:text-8xl font-bold mb-8;
+    }
+
+    header h2 {
+        @apply text-3xl md:text-5xl italic text-gray-600;
+    }
+
+    header img {
+        @apply mx-auto mt-8 rounded-2xl shadow-xl max-w-full md:max-w-3xl;
+    }
+    
+    section {
+        @apply px-[9%] md:px-[20%] py-12;
+    }
+
+    section img {
+        @apply mx-auto my-8 rounded-xl shadow-lg max-w-full md:max-w-2xl hover:scale-105 transition-transform duration-300;
+    }
+
+    section p {
+        @apply text-lg md:text-xl leading-relaxed max-w-3xl mx-auto mb-6;
+    }
+
+    a {
+        @apply text-blue-600 hover:text-blue-800 underline;
+    }
+
+</style>
     
 </head>
 
 <body>
     <header>
     <h1>Welcome to my page - Thiago Websites</h1>
+
+    <img src="assets/img/personal.jpg" width="612" height="408" alt="My Personal Website">
+
     </header>
 
 <main>
@@ -20,6 +69,8 @@
     <p><a href="exercises/page-2.html">Purple Rain</a></p>
     <p><a href="exercises/page-3.html">Web Page with Sections</a></p>
     <p><a href="exercises/laptop.html">Top-Selling Laptop Computers</a></p>
+    <p><a href="exercises/page-4.html">Vincent van Gogh</a></p> 
+    <p><a href="exercises/page-5.html">Irish Tourism</a></p>
 
     </section>
 </main>
