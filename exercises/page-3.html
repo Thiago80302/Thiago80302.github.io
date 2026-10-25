@@ -5,11 +5,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Thiago Nogueira Borborema 80302 -->
+
     <title>Web Page with Sections</title>
     <meta name="description" content="A sample web page with multiple sections.">
 
+    <link rel="apple-touch-icon" sizes="180x180"
+          href="assets/img/favicons/apple-touch-icon.png">
+
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="assets/img/favicons/favicon-32x32.png">
+
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="assets/img/favicons/favicon-16x16.png">
+
+    <link rel="manifest"
+          href="assets/img/favicons/site.webmanifest">
+
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style type="text/tailwindcss">
+
+    body {
+        @apply bg-teal-50;
+    }
 
     header {
         @apply pt-4 px-[9%] pb-2 md:py-[1%] md:px-[20%];
@@ -43,29 +62,22 @@
         @apply text-blue-800;
     }
 
-</style>
+    </style>
+</head>
 
-<p style="text-align: center;">Thiago Bloggs 80302</p>
-
-</head>    
-    
 <body>
 
-
- <!-- Hero block -->
     <header>
         <h1>Big heading</h1>
         <h2>Smaller sub-heading</h2>
     </header>
 
-    <!-- Main content of web page in sections -->
     <main>
         <section>
             <h2>Smaller Heading</h2>
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima exercitationem, fuga doloribus sequi sint eveniet nobis nulla obcaecati quibusdam quae, quia aliquam mollitia ea vel ullam dolores natus in quisquam?</p>
 
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci laudantium aperiam quam, fugiat vitae distinctio velit quo maiores placeat, dolores vero molestiae enim libero nam, debitis a dignissimos.</p>
-
         </section>
 
         <section>
@@ -73,7 +85,6 @@
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima exercitationem, fuga doloribus sequi sint eveniet nobis nulla obcaecati quibusdam quae, quia aliquam mollitia ea vel ullam dolores natus in quisquam?</p>
 
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque inventore iure tempora.</p>
-
         </section>
 
         <section>
@@ -82,7 +93,6 @@
 
             <p>What is Lorem Ipsum?
             From its medieval origins to the digital era, learn everything there is to know about the ubiquitous lorem ipsum passage.</p>
-
         </section>
 
         <section>
@@ -90,7 +100,6 @@
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima exercitationem, fuga doloribus sequi sint eveniet nobis nulla obcaecati quibusdam quae, quia aliquam mollitia ea vel ullam dolores natus in quisquam?</p>
 
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-
         </section>
 
         <section>
@@ -98,7 +107,6 @@
             <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minima exercitationem, fuga doloribus sequi sint eveniet nobis nulla obcaecati quibusdam quae, quia aliquam mollitia ea vel ullam dolores natus in quisquam?</p>
 
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis ad animi doloremque illum. Voluptate officia eveniet, aliquam tenetur quidem qui doloribus doloremque maxime animi sequi, autem commodi vel, quae veniam!</p>
-
         </section>
 
         <section>
@@ -108,12 +116,8 @@
             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. A quia molestiae eius quod consequuntur cupiditate illum. Expedita error quisquam corporis rem recusandae ratione aliquam, beatae est necessitatibus, sed, velit ducimus!</p>
 
             <p><a href="../index.html">Back to Home page</a></p>
-
         </section>
-    
     </main>
-    <!-- main content ends here -->
-    </body>
-    </html>
-    
-    
+
+</body>
+</html>

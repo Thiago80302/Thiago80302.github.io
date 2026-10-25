@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Thiago Nogueira Borborema 80302 -->
+
+    <title>Hero Block with Image</title>
+
+    <meta name="description"
+        content="A hero block with a background image and a tinted overlay.">
+
+    <link rel="preload" href="assets/img/business.jpg" as="image">
+
+    <link rel="apple-touch-icon" sizes="180x180"
+          href="assets/img/favicons/apple-touch-icon.png">
+
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="assets/img/favicons/favicon-32x32.png">
+
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="assets/img/favicons/favicon-16x16.png">
+
+    <link rel="manifest"
+          href="assets/img/favicons/site.webmanifest">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        body {
+            @apply m-0;
+        }
+
+        header {
+            @apply relative flex min-h-screen flex-col
+                   items-center justify-center
+                   bg-cover bg-center text-center text-white;
+
+            background-image: url("assets/img/business.jpg");
+        }
+
+        header::before {
+            content: "";
+            @apply absolute inset-0 bg-black/60;
+        }
+
+        header h1,
+        header h2 {
+            @apply relative z-10 text-shadow-lg/30;
+        }
+
+        header h1 {
+            @apply mb-4 text-5xl font-bold;
+        }
+
+        header h2 {
+            @apply text-2xl font-semibold;
+        }
+
+        .highlight-text {
+            @apply absolute left-0 top-0 z-20 w-full
+                   bg-white/80 py-2 text-center text-black;
+        }
+
+        .slide-in-top {
+            animation: slide-in-top 1s
+                cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        }
+
+        @keyframes slide-in-top {
+            0% {
+                transform: translateY(-1000px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .slide-in-left {
+            animation: slide-in-left 0.5s
+                cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        }
+
+        @keyframes slide-in-left {
+            0% {
+                transform: translateX(-1000px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <h1 class="slide-in-top">THIAGO NOGUEIRA</h1>
+        <h2 class="slide-in-left">Creative Web Developer</h2>
+
+    </header>
+
+</body>
+
+</html>
