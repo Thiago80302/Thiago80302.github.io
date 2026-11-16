@@ -1,0 +1,1205 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Short, unique description of web page. Often used as the snippet shown in search results. About 120 characters is ideal.">
+    <title>Hero Block Generator</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Shared hero styles: also included in exported HTML. -->
+    <style id="hero-styles" type="text/tailwindcss">
+        .hero {
+            @apply flex items-center px-6 py-16 font-sans md:px-12 md:py-24;
+        }
+
+        .hero-content {
+            @apply mx-auto w-full min-w-0 max-w-6xl;
+        }
+
+        .hero h1 {
+            @apply max-w-4xl text-4xl font-bold leading-tight md:text-7xl;
+        }
+
+        .hero h2 {
+            @apply mt-6 max-w-3xl text-xl font-normal leading-relaxed md:text-3xl;
+        }
+
+        .hero h1,
+        .hero h2 {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .hero h1.heading-sans,
+        .hero h2.heading-sans {
+            @apply font-sans;
+        }
+
+        .hero h1.heading-serif,
+        .hero h2.heading-serif {
+            @apply font-serif;
+        }
+
+        .hero-light {
+            @apply bg-slate-50;
+        }
+
+        .hero-light h1 {
+            @apply text-slate-900;
+        }
+
+        .hero-light h2 {
+            @apply text-slate-700;
+        }
+
+        .hero-dark {
+            @apply bg-slate-900;
+        }
+
+        .hero-dark h1 {
+            @apply text-slate-50;
+        }
+
+        .hero-dark h2 {
+            @apply text-slate-300;
+        }
+
+        .hero-centre {
+            @apply text-center;
+        }
+
+        .hero-centre h1,
+        .hero-centre h2 {
+            @apply mx-auto;
+        }
+
+        .hero-min-height {
+            @apply min-h-[480px] md:min-h-[85vh];
+        }
+
+        .hero [hidden] {
+            display: none !important;
+        }
+    </style>
+
+    <!-- Shared spacing styles. -->
+    <style id="hero-spacing">
+        .hero h1 {
+            letter-spacing: -0.05em;
+        }
+
+        .hero h2 {
+            letter-spacing: -0.025em;
+        }
+    </style>
+
+    <!-- Shared colour styles: generated from Tailwind palette variables. -->
+    <style id="hero-colours">
+        .hero.hero-custom-colours {
+            background-color: var(--color-slate-50);
+        }
+
+        .hero.hero-custom-colours h1 {
+            color: var(--color-slate-900);
+        }
+
+        .hero.hero-custom-colours h2 {
+            color: var(--color-slate-700);
+        }
+    </style>
+
+    <!-- Editor-only styles: excluded from exported HTML. -->
+    <style type="text/tailwindcss">
+        body {
+            @apply bg-white font-sans text-slate-900;
+        }
+
+        .app {
+            @apply pb-40;
+        }
+
+        .editor-panel {
+            @apply border-b border-slate-200 px-6 py-6 md:px-12;
+        }
+
+        .editor-content {
+            @apply mx-auto max-w-6xl;
+        }
+
+        .editor-eyebrow {
+            @apply mb-2 text-xs font-bold uppercase tracking-widest text-blue-700;
+        }
+
+        .editor-title {
+            @apply text-2xl font-bold tracking-tight;
+        }
+
+        .controls {
+            @apply mt-6 flex flex-wrap gap-x-8 gap-y-4;
+        }
+
+        .control {
+            @apply flex cursor-pointer items-center gap-3 text-sm font-semibold;
+        }
+
+        .control input {
+            @apply h-5 w-5 cursor-pointer accent-blue-700;
+        }
+
+        .text-effects {
+            @apply mt-6 grid gap-4 md:grid-cols-2;
+        }
+
+        .effect-group {
+            @apply min-w-0 rounded-lg border border-slate-200 p-4;
+        }
+
+        .effect-group legend {
+            @apply px-2 text-sm font-bold;
+        }
+
+        .effect-group:disabled {
+            @apply opacity-50;
+        }
+
+        .effect-group:disabled input {
+            cursor: not-allowed;
+        }
+
+        .slider-label {
+            @apply mt-4 flex flex-wrap items-center justify-between gap-2 text-sm font-semibold;
+        }
+
+        .slider-value {
+            @apply font-mono text-xs text-slate-600;
+        }
+
+        .spacing-slider {
+            @apply mt-3 block w-full cursor-pointer accent-blue-700;
+        }
+
+        .editing-help {
+            @apply mt-5 text-sm text-slate-600;
+        }
+
+        .hero [contenteditable] {
+            cursor: text;
+        }
+
+        .hero [contenteditable]:focus {
+            outline: 2px dashed #2563eb;
+            outline-offset: 8px;
+            border-radius: 2px;
+        }
+
+        .control input:focus-visible,
+        .spacing-slider:focus-visible,
+        .copy-button:focus-visible,
+        .html-output:focus-visible,
+        .target-button:focus-visible,
+        .colour-swatch:focus-visible {
+            outline: 3px solid #2563eb;
+            outline-offset: 4px;
+        }
+
+        .copy-tools {
+            @apply fixed right-4 bottom-4 z-10 flex flex-col items-end gap-2;
+            max-width: calc(100% - 2rem);
+        }
+
+        .copy-status {
+            @apply max-w-xs rounded-lg bg-white px-3 py-2 text-sm text-slate-700 shadow;
+        }
+
+        .copy-status:empty {
+            display: none;
+        }
+
+        .copy-button {
+            @apply cursor-pointer rounded-lg bg-blue-700 px-5 py-3 font-semibold text-white shadow-lg;
+        }
+
+        .copy-button:hover {
+            @apply bg-blue-800;
+        }
+
+        .manual-copy {
+            @apply mx-auto max-w-6xl px-6 py-8;
+        }
+
+        .manual-copy-title {
+            @apply text-lg font-bold;
+        }
+
+        .manual-copy-help {
+            @apply mt-2 text-sm text-slate-600;
+        }
+
+        .output-label {
+            @apply mt-4 block text-sm font-semibold;
+        }
+
+        .html-output {
+            @apply mt-2 h-80 w-full rounded-lg border border-slate-300 bg-slate-50 p-4 font-mono text-sm;
+        }
+
+        /* Colour palette interface. */
+        .palette-panel {
+            @apply mt-6 rounded-lg border border-slate-200 bg-slate-50 p-4;
+        }
+
+        .palette-title {
+            @apply text-sm font-bold text-slate-900;
+        }
+
+        .palette-help {
+            @apply mt-1 text-xs text-slate-600;
+        }
+
+        .target-buttons {
+            @apply mt-4 flex flex-wrap gap-2;
+        }
+
+        .target-button {
+            @apply cursor-pointer rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700;
+        }
+
+        .target-button[aria-pressed="true"] {
+            @apply border-blue-700 bg-blue-700 text-white;
+        }
+
+        .target-button:disabled {
+            @apply cursor-not-allowed opacity-40;
+        }
+
+        .selected-colour {
+            @apply mt-4 flex flex-wrap items-center gap-2 text-sm font-semibold;
+        }
+
+        .selected-colour-name {
+            @apply rounded-md border border-slate-200 bg-white px-3 py-1 font-mono text-xs;
+        }
+
+        .palette-scroll {
+            @apply mt-4 w-full overflow-x-auto rounded-lg border border-slate-200 bg-white p-3;
+            max-width: 100%;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: 85px repeat(11, 34px);
+            gap: 7px;
+            width: max-content;
+            align-items: center;
+        }
+
+        .palette-family {
+            @apply text-xs font-semibold text-slate-700;
+        }
+
+        .palette-shade {
+            @apply text-center text-xs font-semibold text-slate-600;
+        }
+
+        .colour-swatch {
+            width: 34px;
+            height: 34px;
+            border: 1px solid rgb(148 163 184 / 45%);
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            background-color: var(--swatch-colour);
+        }
+
+        .colour-swatch[aria-pressed="true"] {
+            outline: 3px solid #2563eb;
+            outline-offset: 2px;
+        }
+
+        .colour-swatch[aria-pressed="true"]::after {
+            content: "";
+            position: absolute;
+            inset: 8px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px #0f172a;
+        }
+
+        .special-colours {
+            @apply mt-4 flex flex-wrap items-center gap-3;
+        }
+
+        .special-label {
+            @apply text-xs font-semibold text-slate-700;
+        }
+
+        .special-colour {
+            @apply flex items-center gap-2 text-xs font-medium;
+        }
+
+        .palette-scroll:focus-visible {
+            outline: 2px solid #2563eb;
+            outline-offset: 2px;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="app">
+        <section class="editor-panel" aria-labelledby="app-title">
+            <div class="editor-content">
+                <p class="editor-eyebrow">
+                    Frontend workshop · Version 2
+                </p>
+
+                <h2 id="app-title" class="editor-title">
+                    Hero Block Generator
+                </h2>
+
+                <div class="controls" role="group" aria-label="Hero settings">
+                    <label class="control" for="dark-appearance">
+                        <input id="dark-appearance" type="checkbox">
+                        Dark appearance preset
+                    </label>
+
+                    <label class="control" for="centre-text">
+                        <input id="centre-text" type="checkbox">
+                        Centre text
+                    </label>
+
+                    <label class="control" for="minimum-height">
+                        <input id="minimum-height" type="checkbox" checked>
+                        Minimum height
+                    </label>
+
+                    <label class="control" for="show-subheading">
+                        <input id="show-subheading" type="checkbox" checked>
+                        Show subheading
+                    </label>
+                </div>
+
+                <div class="text-effects">
+                    <fieldset class="effect-group">
+                        <legend>H1 text effects</legend>
+
+                        <label class="control" for="h1-serif">
+                            <input id="h1-serif" type="checkbox">
+                            Serif font
+                        </label>
+
+                        <label class="slider-label" for="h1-spacing">
+                            Letter spacing
+                            <output
+                                id="h1-spacing-value"
+                                class="slider-value"
+                                for="h1-spacing"
+                            >-0.05em</output>
+                        </label>
+
+                        <input
+                            id="h1-spacing"
+                            class="spacing-slider"
+                            type="range"
+                            min="-0.05"
+                            max="0.10"
+                            step="0.005"
+                            value="-0.05"
+                            aria-valuetext="-0.05em"
+                        >
+                    </fieldset>
+
+                    <fieldset id="h2-effects" class="effect-group">
+                        <legend>H2 text effects</legend>
+
+                        <label class="control" for="h2-serif">
+                            <input id="h2-serif" type="checkbox">
+                            Serif font
+                        </label>
+
+                        <label class="slider-label" for="h2-spacing">
+                            Letter spacing
+                            <output
+                                id="h2-spacing-value"
+                                class="slider-value"
+                                for="h2-spacing"
+                            >-0.025em</output>
+                        </label>
+
+                        <input
+                            id="h2-spacing"
+                            class="spacing-slider"
+                            type="range"
+                            min="-0.05"
+                            max="0.10"
+                            step="0.005"
+                            value="-0.025"
+                            aria-valuetext="-0.025em"
+                        >
+                    </fieldset>
+                </div>
+
+                <!-- New shared Tailwind colour palette. -->
+                <section
+                    class="palette-panel"
+                    aria-labelledby="palette-title"
+                >
+                    <h3 id="palette-title" class="palette-title">
+                        Tailwind colour palette
+                    </h3>
+
+                    <p class="palette-help">
+                        Choose a target, then select a solid colour.
+                        Each target keeps its own colour.
+                    </p>
+
+                    <div
+                        class="target-buttons"
+                        role="group"
+                        aria-label="Choose colour target"
+                    >
+                        <button
+                            id="target-background"
+                            class="target-button"
+                            type="button"
+                            data-target="background"
+                            aria-pressed="true"
+                        >
+                            Background
+                        </button>
+
+                        <button
+                            id="target-h1"
+                            class="target-button"
+                            type="button"
+                            data-target="h1"
+                            aria-pressed="false"
+                        >
+                            H1
+                        </button>
+
+                        <button
+                            id="target-h2"
+                            class="target-button"
+                            type="button"
+                            data-target="h2"
+                            aria-pressed="false"
+                        >
+                            H2
+                        </button>
+                    </div>
+
+                    <p class="selected-colour">
+                        <span>Selected colour:</span>
+                        <output
+                            id="selected-colour-name"
+                            class="selected-colour-name"
+                            aria-live="polite"
+                        >slate-50</output>
+                    </p>
+
+                    <div
+                        class="palette-scroll"
+                        role="region"
+                        aria-label="Tailwind colour swatches"
+                        tabindex="0"
+                    >
+                        <div
+                            id="palette-grid"
+                            class="palette-grid"
+                        ></div>
+                    </div>
+
+                    <div
+                        id="special-colours"
+                        class="special-colours"
+                        aria-label="Black and white colours"
+                    >
+                        <span class="special-label">
+                            Other colours:
+                        </span>
+                    </div>
+                </section>
+
+                <p id="editing-help" class="editing-help">
+                    Click a heading to edit the text.
+                </p>
+            </div>
+        </section>
+
+        <header id="hero" class="hero hero-light hero-min-height">
+            <div class="hero-content">
+                <h1
+                    id="hero-heading"
+                    class="heading-sans"
+                    contenteditable="plaintext-only"
+                    aria-label="Hero main heading, editable"
+                    aria-describedby="editing-help"
+                    spellcheck="true"
+                >Lorem ipsum dolor sit amet</h1>
+
+                <h2
+                    id="hero-subheading"
+                    class="heading-sans"
+                    contenteditable="plaintext-only"
+                    aria-label="Hero supporting heading, editable"
+                    aria-describedby="editing-help"
+                    spellcheck="true"
+                >Consectetur adipiscing elit. Integer vitae libero ac risus egestas placerat.</h2>
+            </div>
+        </header>
+
+        <section
+            id="manual-copy"
+            class="manual-copy"
+            aria-labelledby="manual-copy-title"
+            hidden
+        >
+            <h2 id="manual-copy-title" class="manual-copy-title">
+                Copy your HTML manually
+            </h2>
+
+            <p id="manual-copy-help" class="manual-copy-help">
+                Automatic copying is unavailable. Select and copy the code
+                below, then paste it into VS Code.
+            </p>
+
+            <label for="html-output" class="output-label">
+                Complete HTML page
+            </label>
+
+            <textarea
+                id="html-output"
+                class="html-output"
+                aria-describedby="manual-copy-help"
+                readonly
+                spellcheck="false"
+            ></textarea>
+        </section>
+    </main>
+
+    <footer class="copy-tools">
+        <p
+            id="copy-status"
+            class="copy-status"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+        ></p>
+
+        <button id="copy-button" class="copy-button" type="button">
+            Copy HTML
+        </button>
+    </footer>
+
+    <script>
+        "use strict";
+
+        // Settings include independent colours for all three targets.
+        const settings = {
+            darkAppearance: false,
+            centreText: false,
+            minimumHeight: true,
+            showSubheading: true,
+            h1Serif: false,
+            h2Serif: false,
+            h1Spacing: -0.05,
+            h2Spacing: -0.025,
+            backgroundColour: "slate-50",
+            h1Colour: "slate-900",
+            h2Colour: "slate-700"
+        };
+
+        const darkControl = document.querySelector("#dark-appearance");
+        const centreControl = document.querySelector("#centre-text");
+        const heightControl = document.querySelector("#minimum-height");
+        const subheadingControl = document.querySelector("#show-subheading");
+
+        const h1SerifControl = document.querySelector("#h1-serif");
+        const h2SerifControl = document.querySelector("#h2-serif");
+        const h1SpacingControl = document.querySelector("#h1-spacing");
+        const h2SpacingControl = document.querySelector("#h2-spacing");
+
+        const h1SpacingValue = document.querySelector("#h1-spacing-value");
+        const h2SpacingValue = document.querySelector("#h2-spacing-value");
+        const h2Effects = document.querySelector("#h2-effects");
+
+        const hero = document.querySelector("#hero");
+        const heading = document.querySelector("#hero-heading");
+        const subheading = document.querySelector("#hero-subheading");
+
+        const heroStyles = document.querySelector("#hero-styles");
+        const heroSpacing = document.querySelector("#hero-spacing");
+        const heroColours = document.querySelector("#hero-colours");
+
+        const copyButton = document.querySelector("#copy-button");
+        const copyStatus = document.querySelector("#copy-status");
+        const manualCopy = document.querySelector("#manual-copy");
+        const htmlOutput = document.querySelector("#html-output");
+
+        // Palette elements.
+        const paletteGrid = document.querySelector("#palette-grid");
+        const specialColours = document.querySelector("#special-colours");
+        const selectedColourName =
+            document.querySelector("#selected-colour-name");
+
+        const targetButtons =
+            document.querySelectorAll(".target-button");
+
+        // Tailwind v4 colour families and shade numbers.
+        const colourFamilies = [
+            "slate", "gray", "zinc", "neutral", "stone",
+            "red", "orange", "amber", "yellow", "lime",
+            "green", "emerald", "teal", "cyan", "sky",
+            "blue", "indigo", "violet", "purple",
+            "fuchsia", "pink", "rose"
+        ];
+
+        const colourShades = [
+            50, 100, 200, 300, 400, 500,
+            600, 700, 800, 900, 950
+        ];
+
+        // Only one palette target is active at a time.
+        let activeColourTarget = "background";
+
+
+        function updateSettings() {
+            settings.darkAppearance = darkControl.checked;
+            settings.centreText = centreControl.checked;
+            settings.minimumHeight = heightControl.checked;
+            settings.showSubheading = subheadingControl.checked;
+
+            settings.h1Serif = h1SerifControl.checked;
+            settings.h2Serif = h2SerifControl.checked;
+
+            settings.h1Spacing = Number(h1SpacingControl.value);
+            settings.h2Spacing = Number(h2SpacingControl.value);
+
+            updateHero();
+            refreshOutput();
+        }
+
+
+        function updateHero() {
+            // Keep existing editable headings and their text.
+            hero.classList.toggle(
+                "hero-light",
+                !settings.darkAppearance
+            );
+
+            hero.classList.toggle(
+                "hero-dark",
+                settings.darkAppearance
+            );
+
+            hero.classList.toggle(
+                "hero-centre",
+                settings.centreText
+            );
+
+            hero.classList.toggle(
+                "hero-min-height",
+                settings.minimumHeight
+            );
+
+            // Custom colours override the preset selectors.
+            hero.classList.add("hero-custom-colours");
+
+            subheading.hidden = !settings.showSubheading;
+            h2Effects.disabled = !settings.showSubheading;
+
+            heading.classList.toggle(
+                "heading-sans",
+                !settings.h1Serif
+            );
+
+            heading.classList.toggle(
+                "heading-serif",
+                settings.h1Serif
+            );
+
+            subheading.classList.toggle(
+                "heading-sans",
+                !settings.h2Serif
+            );
+
+            subheading.classList.toggle(
+                "heading-serif",
+                settings.h2Serif
+            );
+
+            updateLetterSpacing();
+            updateHeroColours();
+            updatePaletteState();
+        }
+
+
+        function updateLetterSpacing() {
+            const h1Value = settings.h1Spacing + "em";
+            const h2Value = settings.h2Spacing + "em";
+
+            h1SpacingValue.value = h1Value;
+            h2SpacingValue.value = h2Value;
+
+            h1SpacingControl.setAttribute(
+                "aria-valuetext",
+                h1Value
+            );
+
+            h2SpacingControl.setAttribute(
+                "aria-valuetext",
+                h2Value
+            );
+
+            // Update shared CSS in the head, not inline styles.
+            heroSpacing.textContent = `
+        .hero h1 {
+            letter-spacing: ${h1Value};
+        }
+
+        .hero h2 {
+            letter-spacing: ${h2Value};
+        }
+    `;
+        }
+
+
+        // Return a safe CSS value using Tailwind palette variables.
+        function getColourValue(colourName) {
+            if (colourName === "black") {
+                return "#000000";
+            }
+
+            if (colourName === "white") {
+                return "#ffffff";
+            }
+
+            return `var(--color-${colourName})`;
+        }
+
+
+        // Apply independent solid colours through shared CSS.
+        function updateHeroColours() {
+            const background = getColourValue(
+                settings.backgroundColour
+            );
+
+            const h1 = getColourValue(settings.h1Colour);
+            const h2 = getColourValue(settings.h2Colour);
+
+            heroColours.textContent = `
+        .hero.hero-custom-colours {
+            background-color: ${background};
+        }
+
+        .hero.hero-custom-colours h1 {
+            color: ${h1};
+        }
+
+        .hero.hero-custom-colours h2 {
+            color: ${h2};
+        }
+    `;
+        }
+
+
+        // Find the stored colour for the active target.
+        function getActiveColour() {
+            if (activeColourTarget === "background") {
+                return settings.backgroundColour;
+            }
+
+            if (activeColourTarget === "h1") {
+                return settings.h1Colour;
+            }
+
+            return settings.h2Colour;
+        }
+
+
+        // Change only the selected target's colour.
+        function selectColour(colourName) {
+            if (activeColourTarget === "background") {
+                settings.backgroundColour = colourName;
+            } else if (activeColourTarget === "h1") {
+                settings.h1Colour = colourName;
+            } else if (activeColourTarget === "h2") {
+                settings.h2Colour = colourName;
+            }
+
+            updateHeroColours();
+            updatePaletteState();
+            refreshOutput();
+        }
+
+
+        // Switch between Background, H1 and H2.
+        function selectColourTarget(target) {
+            if (target === "h2" && !settings.showSubheading) {
+                return;
+            }
+
+            activeColourTarget = target;
+            updatePaletteState();
+        }
+
+
+        // Reset all three colours when the appearance preset changes.
+        function applyAppearancePreset() {
+            if (darkControl.checked) {
+                settings.backgroundColour = "slate-900";
+                settings.h1Colour = "slate-50";
+                settings.h2Colour = "slate-300";
+            } else {
+                settings.backgroundColour = "slate-50";
+                settings.h1Colour = "slate-900";
+                settings.h2Colour = "slate-700";
+            }
+
+            updateSettings();
+        }
+
+
+        // Build one reusable colour swatch.
+        function createColourSwatch(colourName) {
+            const button = document.createElement("button");
+
+            button.type = "button";
+            button.className = "colour-swatch";
+            button.dataset.colour = colourName;
+
+            const accessibleName = colourName
+                .split("-")
+                .map(function (part, index) {
+                    if (index === 0) {
+                        return part.charAt(0).toUpperCase() +
+                            part.slice(1);
+                    }
+
+                    return part;
+                })
+                .join(" ");
+
+            button.setAttribute("aria-label", accessibleName);
+            button.setAttribute("aria-pressed", "false");
+            button.title = accessibleName;
+
+            // A CSS rule in the head supplies the swatch colour.
+            button.addEventListener("click", function () {
+                selectColour(colourName);
+            });
+
+            return button;
+        }
+
+
+        // Create the labelled grid of Tailwind colour families.
+        function buildPalette() {
+            const corner = document.createElement("span");
+            corner.className = "palette-family";
+            corner.textContent = "Family";
+            paletteGrid.appendChild(corner);
+
+            colourShades.forEach(function (shade) {
+                const label = document.createElement("span");
+                label.className = "palette-shade";
+                label.textContent = shade;
+                paletteGrid.appendChild(label);
+            });
+
+            colourFamilies.forEach(function (family) {
+                const familyLabel = document.createElement("span");
+
+                familyLabel.className = "palette-family";
+                familyLabel.textContent =
+                    family.charAt(0).toUpperCase() +
+                    family.slice(1);
+
+                paletteGrid.appendChild(familyLabel);
+
+                colourShades.forEach(function (shade) {
+                    const colourName = `${family}-${shade}`;
+                    const swatch = createColourSwatch(colourName);
+
+                    paletteGrid.appendChild(swatch);
+                });
+            });
+
+            // Black and white are separate from the shade grid.
+            ["black", "white"].forEach(function (colourName) {
+                const wrapper = document.createElement("div");
+                wrapper.className = "special-colour";
+
+                const swatch = createColourSwatch(colourName);
+
+                const label = document.createElement("span");
+                label.textContent =
+                    colourName.charAt(0).toUpperCase() +
+                    colourName.slice(1);
+
+                wrapper.appendChild(swatch);
+                wrapper.appendChild(label);
+                specialColours.appendChild(wrapper);
+            });
+
+            // Add named CSS rules for the swatch backgrounds.
+            // This stylesheet belongs only to the editor.
+            const paletteStyle = document.createElement("style");
+            paletteStyle.id = "palette-swatch-styles";
+
+            let css = "";
+
+            colourFamilies.forEach(function (family) {
+                colourShades.forEach(function (shade) {
+                    const name = `${family}-${shade}`;
+
+                    css += `
+        .colour-swatch[data-colour="${name}"] {
+            --swatch-colour: var(--color-${name});
+        }
+    `;
+                });
+            });
+
+            css += `
+        .colour-swatch[data-colour="black"] {
+            --swatch-colour: #000000;
+        }
+
+        .colour-swatch[data-colour="white"] {
+            --swatch-colour: #ffffff;
+        }
+    `;
+
+            paletteStyle.textContent = css;
+            document.head.appendChild(paletteStyle);
+        }
+
+
+        // Mark the selected colour and active target accessibly.
+        function updatePaletteState() {
+            const h2Target = document.querySelector("#target-h2");
+
+            h2Target.disabled = !settings.showSubheading;
+
+            if (
+                !settings.showSubheading &&
+                activeColourTarget === "h2"
+            ) {
+                activeColourTarget = "background";
+            }
+
+            targetButtons.forEach(function (button) {
+                const isActive =
+                    button.dataset.target === activeColourTarget;
+
+                button.setAttribute(
+                    "aria-pressed",
+                    String(isActive)
+                );
+            });
+
+            const selectedColour = getActiveColour();
+            selectedColourName.value = selectedColour;
+            selectedColourName.textContent = selectedColour;
+
+            document.querySelectorAll(".colour-swatch")
+                .forEach(function (swatch) {
+                    const isSelected =
+                        swatch.dataset.colour === selectedColour;
+
+                    swatch.setAttribute(
+                        "aria-pressed",
+                        String(isSelected)
+                    );
+                });
+        }
+
+
+        function escapeHTML(text) {
+            return text
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#39;");
+        }
+
+
+        function generateHTML() {
+            const headingText = escapeHTML(heading.innerText);
+
+            const description = document.querySelector(
+                'meta[name="description"]'
+            ).content;
+
+            let subheadingHTML = "";
+
+            if (settings.showSubheading) {
+                const subheadingText =
+                    escapeHTML(subheading.innerText);
+
+                subheadingHTML =
+                    `\n            <h2 class="${subheading.className}">${subheadingText}</h2>`;
+            }
+
+            // Export all three shared hero stylesheets.
+            // The editor palette and controls are excluded.
+            return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="${escapeHTML(description)}">
+    <title>My Hero Page</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"><\/script>
+
+    <style type="text/tailwindcss">${heroStyles.textContent}
+    </style>
+
+    <style>${heroSpacing.textContent}
+    </style>
+
+    <style>${heroColours.textContent}
+    </style>
+</head>
+
+<body>
+    <header class="${hero.className}">
+        <div class="hero-content">
+            <h1 class="${heading.className}">${headingText}</h1>${subheadingHTML}
+        </div>
+    </header>
+</body>
+</html>`;
+        }
+
+
+        function refreshOutput() {
+            copyStatus.textContent = "";
+
+            if (!manualCopy.hidden) {
+                htmlOutput.value = generateHTML();
+            }
+        }
+
+
+        async function copyHTML() {
+            const html = generateHTML();
+
+            try {
+                if (!navigator.clipboard?.writeText) {
+                    throw new Error("Clipboard API unavailable");
+                }
+
+                await navigator.clipboard.writeText(html);
+
+                manualCopy.hidden = true;
+                copyStatus.textContent =
+                    "HTML copied—paste it into VS Code.";
+            } catch (error) {
+                manualCopy.hidden = false;
+                htmlOutput.value = generateHTML();
+
+                manualCopy.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+                htmlOutput.focus({ preventScroll: true });
+                htmlOutput.select();
+
+                copyStatus.textContent =
+                    "Copy the selected HTML manually.";
+            }
+        }
+
+
+        function insertPlainText(element, text) {
+            const selection = window.getSelection();
+
+            if (!selection || selection.rangeCount === 0) {
+                return;
+            }
+
+            const range = selection.getRangeAt(0);
+
+            if (!element.contains(range.commonAncestorContainer)) {
+                return;
+            }
+
+            range.deleteContents();
+
+            const textNode = document.createTextNode(text);
+            range.insertNode(textNode);
+            range.setStartAfter(textNode);
+            range.collapse(true);
+
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            refreshOutput();
+        }
+
+
+        function handlePaste(event) {
+            event.preventDefault();
+
+            const text = event.clipboardData.getData("text/plain");
+            insertPlainText(event.currentTarget, text);
+        }
+
+
+        function preventDrop(event) {
+            event.preventDefault();
+        }
+
+
+        // Existing checkbox settings.
+        darkControl.addEventListener(
+            "change",
+            applyAppearancePreset
+        );
+
+        centreControl.addEventListener("change", updateSettings);
+        heightControl.addEventListener("change", updateSettings);
+        subheadingControl.addEventListener("change", updateSettings);
+
+        h1SerifControl.addEventListener("change", updateSettings);
+        h2SerifControl.addEventListener("change", updateSettings);
+
+        h1SpacingControl.addEventListener("input", updateSettings);
+        h2SpacingControl.addEventListener("input", updateSettings);
+
+        // New palette target buttons.
+        targetButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                selectColourTarget(button.dataset.target);
+            });
+        });
+
+        heading.addEventListener("input", refreshOutput);
+        subheading.addEventListener("input", refreshOutput);
+
+        heading.addEventListener("paste", handlePaste);
+        subheading.addEventListener("paste", handlePaste);
+
+        heading.addEventListener("drop", preventDrop);
+        subheading.addEventListener("drop", preventDrop);
+
+        copyButton.addEventListener("click", copyHTML);
+
+        // Build the palette once and initialise the preview.
+        buildPalette();
+        updateSettings();
+    </script>
+</body>
+</html>
